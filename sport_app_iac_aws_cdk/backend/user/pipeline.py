@@ -14,7 +14,7 @@ class UserBackendEcrPipeline(Stack):
         self.repo_owner = 'luissanta'
         self.repo_name = 'user_sport_app'
         self.repo_branch = 'main'
-        self.codepipeline_name = 'user_backend_pipeline_dev'
+        self.codepipeline_name = 'user_backend_pipeline'
         ecr_repository_name = Fn.import_value('UserBackendEcrName')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 

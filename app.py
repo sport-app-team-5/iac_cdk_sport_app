@@ -2,6 +2,8 @@ import aws_cdk as cdk
 from aws_cdk import Environment
 from sport_app_iac_aws_cdk import DockerHubCredentials, VirtualPrivateCloud
 from sport_app_iac_aws_cdk.backend.plan import PlanBackendSecret, PlanEcr, PlanBackendEcrPipeline, PlanBackend
+from sport_app_iac_aws_cdk.backend.service import AdditionalServiceBackendSecret, AdditionalServiceEcr, \
+    AdditionalServiceBackendEcrPipeline, AdditionalServiceBackend
 from sport_app_iac_aws_cdk.backend.user import UserBackendSecret, UserBackend, UserBackendEcrPipeline
 from sport_app_iac_aws_cdk.backend.user.ecr import UserEcr
 
@@ -27,5 +29,14 @@ plan_ecr_repository = PlanEcr(app, "PlanEcr", env=env)
 plan_backend_ecr_pipeline = PlanBackendEcrPipeline(app, "PlanBackendEcrPipeline", docker_hub_secret.secret, env=env)
 plan_backend = PlanBackend(app, "PlanBackend", vpc.vpc, plan_backend_ecr_pipeline.pipeline,
                            plan_backend_secret.secret, env=env)
+
+# Backend additional service
+additional_service_backend_secret = AdditionalServiceBackendSecret(app, "AdditionalServiceBackendSecret", env=env)
+additional_service_ecr_repository = AdditionalServiceEcr(app, "AdditionalServiceEcr", env=env)
+additional_service_backend_ecr_pipeline = (
+    AdditionalServiceBackendEcrPipeline(app, "AdditionalServiceBackendEcrPipeline", docker_hub_secret.secret, env=env))
+additional_service_backend = AdditionalServiceBackend(app, "AdditionalServiceBackend", vpc.vpc,
+                                                      additional_service_backend_ecr_pipeline.pipeline,
+                                                      additional_service_backend_secret.secret, env=env)
 
 app.synth()
