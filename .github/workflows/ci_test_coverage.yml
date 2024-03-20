@@ -1,0 +1,57 @@
+name: CI - Test coverage
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - alpha-develop
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - converted_to_draft
+      - ready_for_review
+    branches:
+      - master
+      - develop
+      - alpha-develop
+
+jobs:
+  ci-test-coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.11 ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        id: install-dependencies
+        working-directory: .
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests and coverage
+        working-directory: .
+        id: run-tests-coverage
+        run: |
+          pytest --cov=sport_app_iac_aws_cdk
+          
+
+      - name: Check coverage
+        working-directory: .
+        id: check-coverage
+        run: |
+          COVERAGE_THRESHOLD=95
+          coverage=$(coverage report -m | tail -n 1 | awk '{print $4}' | tr -d %)
+          if [ $coverage -ge $COVERAGE_THRESHOLD ]; then
+            echo "Tests coverage ($coverage%) is greater than or equal to the threshold ($COVERAGE_THRESHOLD%). Tests passed!"
+          else
+            echo "Tests coverage ($coverage%) is below the threshold ($COVERAGE_THRESHOLD%). Tests failed!"
+            exit 1
+          fi
