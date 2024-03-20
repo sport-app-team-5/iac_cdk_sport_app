@@ -9,6 +9,7 @@ from sport_app_iac_aws_cdk.backend.user.ecr import UserEcr
 from sport_app_iac_aws_cdk.frontend.frontend import SportAppFrontend
 from sport_app_iac_aws_cdk.frontend.pipeline import SportAppFrontendEcrPipeline
 from sport_app_iac_aws_cdk.frontend.secret import SportAppFrontendSecret
+from sport_app_iac_aws_cdk.storage import Postgres
 
 app = cdk.App()
 aws_account = app.node.try_get_context("aws_account")
@@ -51,6 +52,7 @@ sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
                                       sport_app_frontend_ecr_pipeline.pipeline,
                                       sport_app_frontend_secret.secret, env=env)
 
-
+# Storage
+Postgres(app, "Postgres", vpc.vpc, env=env)
 
 app.synth()
