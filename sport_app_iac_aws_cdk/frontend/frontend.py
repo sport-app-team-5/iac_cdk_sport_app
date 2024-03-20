@@ -4,7 +4,7 @@ from aws_cdk import (Stack, aws_ecr as ecr, aws_elasticloadbalancingv2 as elasti
 from constructs import Construct
 
 
-class PlanBackend(Stack):
+class SportAppFrontend(Stack):
 
     def __init__(self, scope: Construct, _id: str, vpc, pipeline, secret, **kwargs) -> None:
         super().__init__(scope, _id, **kwargs)
@@ -12,13 +12,13 @@ class PlanBackend(Stack):
         self.vpc = vpc
         self.pipeline = pipeline
         self.secret = secret
-        self.fargate_cluster_name = 'plan_cluster'
-        self.load_balancer_name = 'plan_lb'
-        self.load_balancer_listener_name = 'plan_listener'
-        self.fargate_task_name = 'plan_task'
-        self.fargate_container_name = 'plan_container'
-        self.fargate_service_name = 'plan_service'
-        ecr_repository_name = Fn.import_value('plan_backend_ecr')
+        self.fargate_cluster_name = 'sport_app_cluster'
+        self.load_balancer_name = 'sport_app_lb'
+        self.load_balancer_listener_name = 'sport_app_listener'
+        self.fargate_task_name = 'sport_app_task'
+        self.fargate_container_name = 'sport_app_container'
+        self.fargate_service_name = 'sport_app_service'
+        ecr_repository_name = Fn.import_value('sport_app_frontend_ecr')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.cluster = self.create_fargate_cluster()
@@ -60,8 +60,8 @@ class PlanBackend(Stack):
                                            logging=ecs.AwsLogDriver(
                                                stream_prefix='ecs',
                                                log_group=logs.LogGroup(
-                                                   self, 'PlanBackendLogGroup',
-                                                   log_group_name='/aws/ecs/PlanBackendTask',
+                                                   self, 'SportAppFrontendLogGroup',
+                                                   log_group_name='/aws/ecs/SportAppFrontendTask',
                                                )
                                            ))
 
@@ -92,7 +92,7 @@ class PlanBackend(Stack):
         self.ecs_service.task_definition.task_role.attach_inline_policy(self.log_policy)
 
     def add_listener_to_load_balancer(self):
-        self.listener.add_targets("PlanServiceTargets", port=80, targets=[self.ecs_service])
+        self.listener.add_targets("SportAppServiceTargets", port=80, targets=[self.ecs_service])
 
     def add_stage_to_pipeline(self):
         deploy_action = codepipeline_actions.EcsDeployAction(
