@@ -1,6 +1,6 @@
 import aws_cdk as cdk
 from aws_cdk import Environment
-from sport_app_iac_aws_cdk import DockerHubCredentials, VirtualPrivateCloud
+from sport_app_iac_aws_cdk import DockerHubCredentials, Vpc
 from sport_app_iac_aws_cdk.backend.plan import PlanBackendSecret, PlanEcr, PlanBackendEcrPipeline, PlanBackend
 from sport_app_iac_aws_cdk.backend.service import AdditionalServiceBackendSecret, AdditionalServiceEcr, \
     AdditionalServiceBackendEcrPipeline, AdditionalServiceBackend
@@ -16,7 +16,7 @@ aws_region = app.node.try_get_context("aws_region")
 env = Environment(account=aws_account, region=aws_region)
 
 # Common
-vpc = VirtualPrivateCloud(app, "VirtualPrivateCloud", env=env)
+vpc = Vpc(app, "Vpc", env=env)
 docker_hub_secret = DockerHubCredentials(app, "DockerHubCredentials", env=env)
 
 # Backend user
@@ -50,5 +50,7 @@ sport_app_frontend_ecr_pipeline = (SportAppFrontendEcrPipeline(app, "SportAppFro
 sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
                                       sport_app_frontend_ecr_pipeline.pipeline,
                                       sport_app_frontend_secret.secret, env=env)
+
+
 
 app.synth()

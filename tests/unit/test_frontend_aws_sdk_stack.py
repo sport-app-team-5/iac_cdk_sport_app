@@ -1,5 +1,5 @@
 import aws_cdk.assertions as assertions
-from sport_app_iac_aws_cdk import VirtualPrivateCloud
+from sport_app_iac_aws_cdk import Vpc
 from sport_app_iac_aws_cdk.frontend.ecr import SportAppEcr
 from sport_app_iac_aws_cdk.frontend.frontend import SportAppFrontend
 from sport_app_iac_aws_cdk.frontend.pipeline import SportAppFrontendEcrPipeline
@@ -12,7 +12,7 @@ class TestFrontendAwsSdkStack:
         assertions.Template.from_stack(stack)
 
     def test_sport_app_frontend_deploy(self, app, env, docker_hub_secret_mock):
-        vpc_stack = VirtualPrivateCloud(app, "VirtualPrivateCloud", env=env)
+        vpc_stack = Vpc(app, "Vpc", env=env)
         pipe_front = SportAppFrontendEcrPipeline(app, "SportAppFrontendEcrPipeline", docker_hub_secret_mock,
                                                 env=env)
         secret_front = SportAppFrontendSecret(app, "SportAppFrontendSecret", env=env)

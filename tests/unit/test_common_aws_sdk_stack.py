@@ -1,11 +1,11 @@
 import aws_cdk.assertions as assertions
-from sport_app_iac_aws_cdk import VirtualPrivateCloud, DockerHubCredentials
+from sport_app_iac_aws_cdk import Vpc, DockerHubCredentials
 from sport_app_iac_aws_cdk.backend.user.ecr import UserEcr
 
 
 class TestCommonAwsSdkStack:
     def test_vpc_created(self, app, env):
-        stack = VirtualPrivateCloud(app, "VirtualPrivateCloud", env=env)
+        stack = Vpc(app, "Vpc", env=env)
         assertions.Template.from_stack(stack)
 
     def test_docker_hub_secret(self, app, env):
