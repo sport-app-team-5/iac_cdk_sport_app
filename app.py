@@ -6,6 +6,9 @@ from sport_app_iac_aws_cdk.backend.service import AdditionalServiceBackendSecret
     AdditionalServiceBackendEcrPipeline, AdditionalServiceBackend
 from sport_app_iac_aws_cdk.backend.user import UserBackendSecret, UserBackend, UserBackendEcrPipeline
 from sport_app_iac_aws_cdk.backend.user.ecr import UserEcr
+from sport_app_iac_aws_cdk.frontend.frontend import SportAppFrontend
+from sport_app_iac_aws_cdk.frontend.pipeline import SportAppFrontendEcrPipeline
+from sport_app_iac_aws_cdk.frontend.secret import SportAppFrontendSecret
 
 app = cdk.App()
 aws_account = app.node.try_get_context("aws_account")
@@ -38,5 +41,14 @@ additional_service_backend_ecr_pipeline = (
 additional_service_backend = AdditionalServiceBackend(app, "AdditionalServiceBackend", vpc.vpc,
                                                       additional_service_backend_ecr_pipeline.pipeline,
                                                       additional_service_backend_secret.secret, env=env)
+
+# Frontend backoffice
+sport_app_frontend_secret = SportAppFrontendSecret(app, "SportAppFrontendSecret", env=env)
+sport_app_ecr_repository = AdditionalServiceEcr(app, "AdditionalServiceEcr", env=env)
+sport_app_frontend_ecr_pipeline = (SportAppFrontendEcrPipeline(app, "SportAppFrontendEcrPipeline",
+                                                               docker_hub_secret.secret, env=env))
+sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
+                                      sport_app_frontend_ecr_pipeline.pipeline,
+                                      sport_app_frontend_secret.secret, env=env)
 
 app.synth()
