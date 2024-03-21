@@ -6,19 +6,19 @@ from constructs import Construct
 
 class UserBackend(Stack):
 
-    def __init__(self, scope: Construct, _id: str, vpc, pipeline, secret, **kwargs) -> None:
-        super().__init__(scope, _id, **kwargs)
+    def __init__(self, scope: Construct, stack_id: str, vpc, pipeline, secret, **kwargs) -> None:
+        super().__init__(scope, stack_id, **kwargs)
 
         self.vpc = vpc
         self.pipeline = pipeline
         self.secret = secret
-        self.fargate_cluster_name = 'UserCluster'
-        self.load_balancer_name = 'UserLB'
-        self.load_balancer_listener_name = 'UserListener'
-        self.fargate_task_name = 'UserTask'
-        self.fargate_container_name = 'UserContainer'
-        self.fargate_service_name = 'UserService'
-        ecr_repository_name = Fn.import_value('UserBackendEcrName')
+        self.fargate_cluster_name = 'user_cluster'
+        self.load_balancer_name = 'user_lb'
+        self.load_balancer_listener_name = 'user_listener'
+        self.fargate_task_name = 'user_task'
+        self.fargate_container_name = 'user_container'
+        self.fargate_service_name = 'user_service'
+        ecr_repository_name = Fn.import_value('user_backend_ecr')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.cluster = self.create_fargate_cluster()

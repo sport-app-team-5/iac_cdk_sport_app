@@ -4,15 +4,15 @@ from constructs import Construct
 
 
 class PlanBackendEcrPipeline(Stack):
-    def __init__(self, scope: Construct, _id: str, docker_hub_secret, **kwargs) -> None:
-        super().__init__(scope, _id, **kwargs)
+    def __init__(self, scope: Construct, stack_id: str, docker_hub_secret, **kwargs) -> None:
+        super().__init__(scope, stack_id, **kwargs)
 
-        self.id = _id
+        self.id = stack_id
         self.docker_hub_secret = docker_hub_secret
         self.connection_code_start_arn = ("arn:aws:codestar-connections:us-east-1:"
                                           "767398152758:connection/57c79685-ad89-4f71-9a22-8cdb670e6f86")
         self.repo_owner = 'luissanta'
-        self.repo_name = 'sport-plan-app'
+        self.repo_name = 'plan_sport_app'
         self.repo_branch = 'main'
         self.codepipeline_name = 'plan_backend_pipeline'
         ecr_repository_name = Fn.import_value('PlanBackendEcrName')

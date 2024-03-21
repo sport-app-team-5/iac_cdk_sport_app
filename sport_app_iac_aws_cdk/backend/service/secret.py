@@ -2,11 +2,12 @@ from aws_cdk import Stack, aws_secretsmanager as secretsmanager
 from constructs import Construct
 
 
-class DockerHubCredentials(Stack):
+class AdditionalServiceBackendSecret(Stack):
+
     def __init__(self, scope: Construct, stack_id: str, **kwargs) -> None:
         super().__init__(scope, stack_id, **kwargs)
 
-        self.secret_name: str = 'docker_hub_credentials'
+        self.secret_name: str = 'additional_service_backend'
         self.secret = self.create_secret()
 
     def create_secret(self):
