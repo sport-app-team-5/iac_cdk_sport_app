@@ -3,8 +3,8 @@ from constructs import Construct
 
 
 class SportAppEcr(Stack):
-    def __init__(self, scope: Construct, _id: str, **kwargs) -> None:
-        super().__init__(scope, _id, **kwargs)
+    def __init__(self, scope: Construct, stack_id: str, **kwargs) -> None:
+        super().__init__(scope, stack_id, **kwargs)
 
         self.ecr_repository_name: str = 'sport_app_frontend_ecr'
         self.create_ecr()

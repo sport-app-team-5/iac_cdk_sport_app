@@ -6,8 +6,8 @@ from constructs import Construct
 
 class PlanBackend(Stack):
 
-    def __init__(self, scope: Construct, _id: str, vpc, pipeline, secret, **kwargs) -> None:
-        super().__init__(scope, _id, **kwargs)
+    def __init__(self, scope: Construct, stack_id: str, vpc, pipeline, secret, **kwargs) -> None:
+        super().__init__(scope, stack_id, **kwargs)
 
         self.vpc = vpc
         self.pipeline = pipeline

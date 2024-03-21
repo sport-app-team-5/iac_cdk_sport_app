@@ -1,11 +1,11 @@
 from aws_cdk import (aws_rds as rds, aws_ec2 as ec2, aws_logs as logs, aws_secretsmanager as secretsmanager,
-    Stack, RemovalPolicy, Duration)
+                     Stack, RemovalPolicy, Duration)
 from constructs import Construct
 
 
 class Postgres(Stack):
-    def __init__(self, scope: Construct, id: str, vpc, **kwargs) -> None:
-        super().__init__(scope, id, **kwargs)
+    def __init__(self, scope: Construct, stack_id: str, vpc, **kwargs) -> None:
+        super().__init__(scope, stack_id, **kwargs)
 
         self.vpc = vpc
         self.backup_retention_days: int = 7
@@ -18,6 +18,7 @@ class Postgres(Stack):
         self.cloudwatch_logs_exports: list = ["postgresql"]
         self.security_group = self.create_security_group()
         self.secret = self.create_secret()
+        self.create_database_instance()
 
     def create_security_group(self):
         security_group = ec2.SecurityGroup(self, self.security_group_name, vpc=self.vpc)
@@ -44,7 +45,7 @@ class Postgres(Stack):
             self.instance_name,
             instance_identifier=self.instance_name,
             engine=rds.DatabaseInstanceEngine.postgres(version=rds.PostgresEngineVersion.VER_16),
-            instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO),
+            instance_type=ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
             vpc=self.vpc,
             vpc_subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC),
             security_groups=[self.security_group],
