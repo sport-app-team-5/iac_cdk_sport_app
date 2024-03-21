@@ -6,6 +6,7 @@ from sport_app_iac_aws_cdk.backend.service import AdditionalServiceBackendSecret
     AdditionalServiceBackendEcrPipeline, AdditionalServiceBackend
 from sport_app_iac_aws_cdk.backend.user import UserBackendSecret, UserBackend, UserBackendEcrPipeline
 from sport_app_iac_aws_cdk.backend.user.ecr import UserEcr
+from sport_app_iac_aws_cdk.frontend.ecr import SportAppEcr
 from sport_app_iac_aws_cdk.frontend.frontend import SportAppFrontend
 from sport_app_iac_aws_cdk.frontend.pipeline import SportAppFrontendEcrPipeline
 from sport_app_iac_aws_cdk.frontend.secret import SportAppFrontendSecret
@@ -45,7 +46,7 @@ additional_service_backend = AdditionalServiceBackend(app, "AdditionalServiceBac
 
 # Frontend backoffice
 sport_app_frontend_secret = SportAppFrontendSecret(app, "SportAppFrontendSecret", env=env)
-sport_app_ecr_repository = AdditionalServiceEcr(app, "AdditionalServiceEcr", env=env)
+sport_app_ecr_repository = SportAppEcr(app, "SportAppEcr", env=env)
 sport_app_frontend_ecr_pipeline = (SportAppFrontendEcrPipeline(app, "SportAppFrontendEcrPipeline",
                                                                docker_hub_secret.secret, env=env))
 sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
