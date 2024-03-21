@@ -1,1 +1,1 @@
-from .postgres_stack_dev import *
+from .postgres_stack import *
