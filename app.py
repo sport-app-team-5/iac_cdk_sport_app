@@ -2,6 +2,8 @@ import aws_cdk as cdk
 from aws_cdk import Environment
 from sport_app_iac_aws_cdk import DockerHubCredentials, Vpc
 from sport_app_iac_aws_cdk.backend.plan import PlanBackendSecret, PlanEcr, PlanBackendEcrPipeline, PlanBackend
+from sport_app_iac_aws_cdk.backend.queue.sns_topic import SnsTopic
+from sport_app_iac_aws_cdk.backend.queue.sqs import Sqs
 from sport_app_iac_aws_cdk.backend.service import AdditionalServiceBackendSecret, AdditionalServiceEcr, \
     AdditionalServiceBackendEcrPipeline, AdditionalServiceBackend
 from sport_app_iac_aws_cdk.backend.user import UserBackendSecret, UserBackend, UserBackendEcrPipeline
@@ -55,5 +57,9 @@ sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
 
 # Storage
 Postgres(app, "Postgres", vpc.vpc, env=env)
+
+# Sqs and Sns
+sns = SnsTopic(app, "SnsTopic", env=env)
+Sqs(app, "Sqs", sns, env=env)
 
 app.synth()

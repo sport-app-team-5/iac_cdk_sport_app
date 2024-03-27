@@ -1,6 +1,8 @@
 import aws_cdk.assertions as assertions
 from sport_app_iac_aws_cdk import Vpc
 from sport_app_iac_aws_cdk.backend.plan import PlanBackendEcrPipeline, PlanBackendSecret, PlanBackend, PlanEcr
+from sport_app_iac_aws_cdk.backend.queue.sns_topic import SnsTopic
+from sport_app_iac_aws_cdk.backend.queue.sqs import Sqs
 from sport_app_iac_aws_cdk.backend.service import AdditionalServiceBackend, AdditionalServiceBackendSecret, \
     AdditionalServiceBackendEcrPipeline, AdditionalServiceEcr
 from sport_app_iac_aws_cdk.backend.user import UserBackendEcrPipeline, UserBackendSecret, UserBackend, UserEcr
@@ -61,4 +63,15 @@ class TestBackendAdditionalServiceAwsSdkStack:
 
     def test_additional_service_ecr(self, app, env):
         stack = AdditionalServiceEcr(app, "AdditionalServiceEcr", env=env)
+        assertions.Template.from_stack(stack)
+
+
+class TestSqsSnsAwsSdkStack:
+    def test_sns_topic(self, app):
+        stack = SnsTopic(app, "SnsTopic")
+        assertions.Template.from_stack(stack)
+
+    def test_sqs(self, app, env):
+        sns = SnsTopic(app, "SnsTopic", env=env)
+        stack = Sqs(app, "Sqs", sns, env=env)
         assertions.Template.from_stack(stack)
