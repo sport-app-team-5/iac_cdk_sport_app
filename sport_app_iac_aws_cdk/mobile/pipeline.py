@@ -3,7 +3,7 @@ from aws_cdk import (Stack, aws_codepipeline as codepipeline, aws_codepipeline_a
 from constructs import Construct
 
 
-class PlanBackendEcrPipeline(Stack):
+class SportAppMobileEcrPipeline(Stack):
     def __init__(self, scope: Construct, stack_id: str, docker_hub_secret, **kwargs) -> None:
         super().__init__(scope, stack_id, **kwargs)
 
@@ -12,10 +12,10 @@ class PlanBackendEcrPipeline(Stack):
         self.connection_code_start_arn = ("arn:aws:codestar-connections:us-east-1:767398152758:connection/"
                                           "57c79685-ad89-4f71-9a22-8cdb670e6f86")
         self.repo_owner = 'sport-app-team-5'
-        self.repo_name = 'plan_sport_app'
+        self.repo_name = 'mobile_sport_app'
         self.repo_branch = 'main'
-        self.codepipeline_name = 'plan_backend_pipeline'
-        ecr_repository_name = Fn.import_value('PlanBackendEcrName')
+        self.codepipeline_name = 'sport_app_mobile_pipeline'
+        ecr_repository_name = Fn.import_value('SportAppFrontendEcrName')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.codebuild_project = self.create_pipeline()

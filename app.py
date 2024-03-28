@@ -12,6 +12,7 @@ from sport_app_iac_aws_cdk.frontend.ecr import SportAppEcr
 from sport_app_iac_aws_cdk.frontend.frontend import SportAppFrontend
 from sport_app_iac_aws_cdk.frontend.pipeline import SportAppFrontendEcrPipeline
 from sport_app_iac_aws_cdk.frontend.secret import SportAppFrontendSecret
+from sport_app_iac_aws_cdk.mobile.pipeline import SportAppMobileEcrPipeline
 from sport_app_iac_aws_cdk.storage import Postgres
 
 app = cdk.App()
@@ -54,6 +55,9 @@ sport_app_frontend_ecr_pipeline = (SportAppFrontendEcrPipeline(app, "SportAppFro
 sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
                                       sport_app_frontend_ecr_pipeline.pipeline,
                                       sport_app_frontend_secret.secret, env=env)
+
+# Frontend mobile
+SportAppMobileEcrPipeline(app, "SportAppMobileEcrPipeline", env=env)
 
 # Storage
 Postgres(app, "Postgres", vpc.vpc, env=env)
