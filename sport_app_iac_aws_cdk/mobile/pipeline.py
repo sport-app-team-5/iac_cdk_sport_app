@@ -14,7 +14,7 @@ class SportAppMobileEcrPipeline(Stack):
         self.repo_owner = 'sport-app-team-5'
         self.repo_name = 'mobile_sport_app'
         self.repo_branch = 'main'
-        self.codepipeline_name = 'sport_app_frontend_pipeline'
+        self.codepipeline_name = 'sport_app_mobile_pipeline'
         ecr_repository_name = Fn.import_value('SportAppFrontendEcrName')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
