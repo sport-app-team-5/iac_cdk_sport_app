@@ -1,0 +1,50 @@
+name: SonarQube
+on:
+  push:    
+    branches:
+        - develop
+        - main
+        - release/*
+        - feature/*
+
+  pull_request:
+    types: [opened, edited, synchronize, reopened, converted_to_draft, ready_for_review]            
+    branches:
+        - develop
+        - main
+        - release/*
+jobs:
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install tox and any other packages
+        run: |
+            python -m pip install --upgrade pip    
+            pip install sqlalchemy    
+            pip install tox                        
+            pip install -r requirements.txt
+    #   - name: Run tox
+    #     run: tox -e py
+      - name: run coverage
+        id: run-coverage
+        run: |
+          pytest --cov=app
+          python -m pytest -v --junitxml="coverage.xml"
+          echo "Found ${{ steps.pl.outputs.path_count }} file(s) with this extension:"
+          for i in ${{ steps.pl.outputs.paths }}; do
+          echo $i
+          done
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
