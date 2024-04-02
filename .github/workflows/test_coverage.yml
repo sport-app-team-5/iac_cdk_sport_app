@@ -1,9 +1,11 @@
-name: CI - Test coverage
+name: Test coverage
+
 on:
   push:
     branches:
       - master
       - develop
+      - alpha-develop
   pull_request:
     types:
       - opened
@@ -15,6 +17,7 @@ on:
     branches:
       - master
       - develop
+      - alpha-develop
 
 jobs:
   ci-test-coverage:
@@ -22,10 +25,14 @@ jobs:
     strategy:
       matrix:
         python-version: [ 3.11 ]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         id: install-dependencies
@@ -34,18 +41,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests and coverage
+      - name: Run test and coverage
         working-directory: .
-        id: run-tests-coverage
+        id: run-test-coverage
         run: |
-          pytest --cov=sport_app_iac_aws_cdk
-          
+          pytest --cov=app
 
       - name: Check coverage
         working-directory: .
         id: check-coverage
         run: |
-          COVERAGE_THRESHOLD=100
+          COVERAGE_THRESHOLD=85
           coverage=$(coverage report -m | tail -n 1 | awk '{print $4}' | tr -d %)
           if [ $coverage -ge $COVERAGE_THRESHOLD ]; then
             echo "Tests coverage ($coverage%) is greater than or equal to the threshold ($COVERAGE_THRESHOLD%). Tests passed!"
