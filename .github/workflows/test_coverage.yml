@@ -3,9 +3,8 @@ name: Test coverage
 on:
   push:
     branches:
-      - master
+      - main
       - develop
-      - alpha-develop
   pull_request:
     types:
       - opened
@@ -15,9 +14,8 @@ on:
       - converted_to_draft
       - ready_for_review
     branches:
-      - master
+      - main
       - develop
-      - alpha-develop
 
 jobs:
   ci-test-coverage:
