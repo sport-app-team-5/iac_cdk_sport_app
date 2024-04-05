@@ -18,7 +18,7 @@ class SportAppFrontend(Stack):
         self.fargate_task_name = 'sport_app_task'
         self.fargate_container_name = 'sport_app_container'
         self.fargate_service_name = 'sport_app_service'
-        ecr_repository_name = Fn.import_value('sport_app_frontend_ecr')
+        ecr_repository_name = Fn.import_value('SportAppFrontendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.cluster = self.create_fargate_cluster()

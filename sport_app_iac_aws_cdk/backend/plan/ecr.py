@@ -7,8 +7,10 @@ class PlanEcr(Stack):
         super().__init__(scope, stack_id, **kwargs)
 
         self.ecr_repository_name: str = 'plan_backend_ecr'
+        self.ecr_repository_name_cfn_output: str = 'PlanBackendEcrCfnOutput'
         self.create_ecr()
 
     def create_ecr(self):
         ecr_repository = ecr.Repository(self, self.ecr_repository_name, repository_name=self.ecr_repository_name)
-        CfnOutput(self, 'PlanBackendEcrName', value=ecr_repository.repository_name, export_name="PlanBackendEcrName")
+        CfnOutput(self, self.ecr_repository_name_cfn_output, value=ecr_repository.repository_name,
+                  export_name=self.ecr_repository_name_cfn_output)
