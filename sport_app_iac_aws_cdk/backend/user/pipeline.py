@@ -37,9 +37,9 @@ class UserBackendEcrPipeline(Stack):
                         "commands": [
                             '$(aws secretsmanager get-secret-value --secret-id $SECRET_ARN --query SecretString '
                             '--output text > docker_hub_creds.json)'.format(self.docker_hub_secret),
-                            'DOCKER_HUB_USERNAME=$(jq -r ".USERNAME" docker_hub_creds.json)',
-                            'DOCKER_HUB_PASSWORD=$(jq -r ".TOKEN" docker_hub_creds.json)',
-                            'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
+                            'USERNAME=$(jq -r ".USERNAME" docker_hub_creds.json)',
+                            'TOKEN=$(jq -r ".TOKEN" docker_hub_creds.json)',
+                            'echo $TOKEN | docker login -u $USERNAME --password-stdin'
                         ]
                     },
                     "build": {
