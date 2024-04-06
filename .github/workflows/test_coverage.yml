@@ -49,7 +49,7 @@ jobs:
         working-directory: .
         id: check-coverage
         run: |
-          COVERAGE_THRESHOLD=75
+          COVERAGE_THRESHOLD=85
           coverage=$(coverage report -m | tail -n 1 | awk '{print $4}' | tr -d %)
           if [ $coverage -ge $COVERAGE_THRESHOLD ]; then
             echo "Tests coverage ($coverage%) is greater than or equal to the threshold ($COVERAGE_THRESHOLD%). Tests passed!"
