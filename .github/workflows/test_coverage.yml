@@ -43,7 +43,7 @@ jobs:
         working-directory: .
         id: run-test-coverage
         run: |
-          pytest --cov=app
+          pytest --cov=sport_app_iac_aws_cdk
 
       - name: Check coverage
         working-directory: .
