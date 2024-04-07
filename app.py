@@ -47,13 +47,13 @@ additional_service_backend = AdditionalServiceBackend(app, "AdditionalServiceBac
                                                       additional_service_backend_secret.secret, env=env)
 
 # Frontend backoffice
-# sport_app_frontend_secret = SportAppFrontendSecret(app, "SportAppFrontendSecret", env=env)
-# sport_app_ecr_repository = SportAppEcr(app, "SportAppEcr", env=env)
-# sport_app_frontend_ecr_pipeline = (SportAppFrontendEcrPipeline(app, "SportAppFrontendEcrPipeline",
-#                                                                docker_hub_secret.secret, env=env))
-# sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
-#                                       sport_app_frontend_ecr_pipeline.pipeline,
-#                                       sport_app_frontend_secret.secret, env=env)
+sport_app_frontend_secret = SportAppFrontendSecret(app, "SportAppFrontendSecret", env=env)
+sport_app_ecr_repository = SportAppEcr(app, "SportAppEcr", env=env)
+sport_app_frontend_ecr_pipeline = (SportAppFrontendEcrPipeline(app, "SportAppFrontendEcrPipeline",
+                                                               docker_hub_secret.secret, env=env))
+sport_app_frontend = SportAppFrontend(app, "SportAppFrontend", vpc.vpc,
+                                      sport_app_frontend_ecr_pipeline.pipeline,
+                                      sport_app_frontend_secret.secret, env=env)
 
 # Storage
 Postgres(app, "Postgres", vpc.vpc, env=env)
