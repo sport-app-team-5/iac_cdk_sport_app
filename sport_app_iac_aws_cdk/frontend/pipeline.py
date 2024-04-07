@@ -15,7 +15,7 @@ class SportAppFrontendEcrPipeline(Stack):
         self.repo_name = 'web_sport_app'
         self.repo_branch = 'main'
         self.codepipeline_name = 'sport_app_frontend_pipeline'
-        ecr_repository_name = Fn.import_value('SportAppFrontendEcrName')
+        ecr_repository_name = Fn.import_value('SportAppFrontendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.codebuild_project = self.create_pipeline()
