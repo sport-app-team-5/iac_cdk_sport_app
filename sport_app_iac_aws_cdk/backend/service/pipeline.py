@@ -15,7 +15,7 @@ class AdditionalServiceBackendEcrPipeline(Stack):
         self.repo_name = 'additional_service_sport_app'
         self.repo_branch = 'main'
         self.codepipeline_name = 'additional_service_backend_pipeline'
-        ecr_repository_name = Fn.import_value('AdditionalServiceBackendEcrName')
+        ecr_repository_name = Fn.import_value('AdditionalServiceBackendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.codebuild_project = self.create_pipeline()

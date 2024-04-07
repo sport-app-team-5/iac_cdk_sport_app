@@ -15,7 +15,7 @@ class PlanBackendEcrPipeline(Stack):
         self.repo_name = 'plan_sport_app'
         self.repo_branch = 'main'
         self.codepipeline_name = 'plan_backend_pipeline'
-        ecr_repository_name = Fn.import_value('PlanBackendEcrName')
+        ecr_repository_name = Fn.import_value('PlanBackendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.codebuild_project = self.create_pipeline()

@@ -15,7 +15,7 @@ class UserBackendEcrPipeline(Stack):
         self.repo_name = 'user_sport_app'
         self.repo_branch = 'main'
         self.codepipeline_name = 'user_backend_pipeline'
-        ecr_repository_name = Fn.import_value('UserBackendEcrName')
+        ecr_repository_name = Fn.import_value('UserBackendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.codebuild_project = self.create_pipeline()
