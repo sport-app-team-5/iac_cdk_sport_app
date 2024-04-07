@@ -69,7 +69,7 @@ class SportAppFrontend(Stack):
         ecs_service = ecs.FargateService(self, self.fargate_service_name,
                                          cluster=self.cluster,
                                          task_definition=self.task_definition,
-                                         desired_count=2
+                                         desired_count=1
                                          )
         return ecs_service
 
