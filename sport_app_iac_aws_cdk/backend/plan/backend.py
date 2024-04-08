@@ -18,7 +18,7 @@ class PlanBackend(Stack):
         self.fargate_task_name = 'plan_task'
         self.fargate_container_name = 'plan_container'
         self.fargate_service_name = 'plan_service'
-        ecr_repository_name = Fn.import_value('plan_backend_ecr')
+        ecr_repository_name = Fn.import_value('PlanBackendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.cluster = self.create_fargate_cluster()
@@ -69,7 +69,7 @@ class PlanBackend(Stack):
         ecs_service = ecs.FargateService(self, self.fargate_service_name,
                                          cluster=self.cluster,
                                          task_definition=self.task_definition,
-                                         desired_count=2
+                                         desired_count=1
                                          )
         return ecs_service
 

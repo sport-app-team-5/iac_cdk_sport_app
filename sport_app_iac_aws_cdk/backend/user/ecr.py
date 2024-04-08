@@ -7,8 +7,11 @@ class UserEcr(Stack):
         super().__init__(scope, stack_id, **kwargs)
 
         self.ecr_repository_name: str = 'user_backend_ecr'
+        self.ecr_repository_name_cfn_output: str = 'UserBackendEcrCfnOutput'
+
         self.create_ecr()
 
     def create_ecr(self):
         ecr_repository = ecr.Repository(self, self.ecr_repository_name, repository_name=self.ecr_repository_name)
-        CfnOutput(self, 'UserBackendEcrName', value=ecr_repository.repository_name, export_name="UserBackendEcrName")
+        CfnOutput(self, self.ecr_repository_name_cfn_output, value=ecr_repository.repository_name,
+                  export_name=self.ecr_repository_name_cfn_output)

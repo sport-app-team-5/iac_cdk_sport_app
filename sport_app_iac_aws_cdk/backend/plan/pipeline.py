@@ -15,7 +15,7 @@ class PlanBackendEcrPipeline(Stack):
         self.repo_name = 'plan_sport_app'
         self.repo_branch = 'main'
         self.codepipeline_name = 'plan_backend_pipeline'
-        ecr_repository_name = Fn.import_value('PlanBackendEcrName')
+        ecr_repository_name = Fn.import_value('PlanBackendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.codebuild_project = self.create_pipeline()
@@ -37,9 +37,9 @@ class PlanBackendEcrPipeline(Stack):
                         "commands": [
                             '$(aws secretsmanager get-secret-value --secret-id $SECRET_ARN --query SecretString '
                             '--output text > docker_hub_creds.json)'.format(self.docker_hub_secret),
-                            'DOCKER_HUB_USERNAME=$(jq -r ".USERNAME" docker_hub_creds.json)',
-                            'DOCKER_HUB_PASSWORD=$(jq -r ".TOKEN" docker_hub_creds.json)',
-                            'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
+                            'USERNAME=$(jq -r ".USERNAME" docker_hub_creds.json)',
+                            'TOKEN=$(jq -r ".TOKEN" docker_hub_creds.json)',
+                            'echo $TOKEN | docker login -u $USERNAME --password-stdin'
                         ]
                     },
                     "build": {

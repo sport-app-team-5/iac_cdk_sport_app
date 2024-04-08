@@ -18,7 +18,7 @@ class UserBackend(Stack):
         self.fargate_task_name = 'user_task'
         self.fargate_container_name = 'user_container'
         self.fargate_service_name = 'user_service'
-        ecr_repository_name = Fn.import_value('user_backend_ecr')
+        ecr_repository_name = Fn.import_value('UserBackendEcrCfnOutput')
         self.ecr_repository = ecr.Repository.from_repository_name(self, ecr_repository_name, ecr_repository_name)
 
         self.cluster = self.create_fargate_cluster()
@@ -69,7 +69,7 @@ class UserBackend(Stack):
         ecs_service = ecs.FargateService(self, self.fargate_service_name,
                                          cluster=self.cluster,
                                          task_definition=self.task_definition,
-                                         desired_count=2
+                                         desired_count=1
                                          )
         return ecs_service
 
