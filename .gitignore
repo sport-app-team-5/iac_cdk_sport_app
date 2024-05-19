@@ -455,3 +455,11 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 cdk.out/*
+
+# Ignorar el contenido de todas las carpetas llamadas "modules"
+**/modules/**
+
+# Excepto el archivo README dentro de las carpetas "modules"
+!**/modules/**/README.*
+
+*.db
