@@ -12,6 +12,7 @@ from sport_app_iac_aws_cdk.frontend.ecr import SportAppEcr
 from sport_app_iac_aws_cdk.frontend.frontend import SportAppFrontend
 from sport_app_iac_aws_cdk.frontend.pipeline import SportAppFrontendEcrPipeline
 from sport_app_iac_aws_cdk.frontend.secret import SportAppFrontendSecret
+from sport_app_iac_aws_cdk.lambda_layers import LambdaLayers
 from sport_app_iac_aws_cdk.storage import Postgres
 
 app = cdk.App()
@@ -61,5 +62,7 @@ Postgres(app, "Postgres", vpc.vpc, env=env)
 # Sqs and Sns
 sns = SnsTopic(app, "SnsTopic", env=env)
 Sqs(app, "Sqs", sns, env=env)
+
+LambdaLayers(app, 'LambdaLayers', env=env)
 
 app.synth()
