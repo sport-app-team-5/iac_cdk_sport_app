@@ -16,7 +16,7 @@ class Sqs(Stack):
         self.create_lambda()
 
     def create_sqs(self):
-        queue = sqs.Queue(self, self.queue_name, queue_name=self.queue_name, fifo=False)
+        queue = sqs.Queue(self, self.queue_name, queue_name=self.queue_name)
         return queue
 
     def create_sqs_subscription(self):
