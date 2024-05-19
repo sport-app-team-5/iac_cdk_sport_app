@@ -3,12 +3,11 @@ from constructs import Construct
 
 
 class Sqs(Stack):
-
     def __init__(self, scope: Construct, stack_id: str, sns_service: sns, **kwargs) -> None:
         super().__init__(scope, stack_id, **kwargs)
 
         self.sns_service = sns_service
-        self.queue_name = "finish_training_queue.fifo"
+        self.queue_name = "finish_training_queue"
         self.lambda_name = "finish_training_sns_lambda"
         self.lambda_event_source_mapping_name = "finish_training_sns_lambda_event_source"
         self.queue = self.create_sqs()
@@ -17,7 +16,7 @@ class Sqs(Stack):
         self.create_lambda()
 
     def create_sqs(self):
-        queue = sqs.Queue(self, self.queue_name, queue_name=self.queue_name, fifo=True)
+        queue = sqs.Queue(self, self.queue_name, queue_name=self.queue_name, fifo=False)
         return queue
 
     def create_sqs_subscription(self):

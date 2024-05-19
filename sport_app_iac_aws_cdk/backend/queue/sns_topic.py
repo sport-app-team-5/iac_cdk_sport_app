@@ -11,5 +11,5 @@ class SnsTopic(Stack):
         self.topic = self.create_sns_topic()
 
     def create_sns_topic(self):
-        topic = sns.Topic(self, self.topic_name, display_name=self.topic_name, fifo=True)
+        topic = sns.Topic(self, self.topic_name, display_name=self.topic_name, fifo=False)
         return topic
